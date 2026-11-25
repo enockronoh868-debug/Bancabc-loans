@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BancABC Loans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { margin: 0; background-color: #f4f7f9; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 400px; background: white; min-height: 100vh; padding-bottom: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        
+        /* Header */
+        .header { padding: 15px 20px; border-bottom: 2px solid #00A651; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* CSS Recreated Logo */
+        .logo-container { display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-main { font-family: Georgia, serif; font-weight: 900; font-size: 28px; color: #0A2240; letter-spacing: -1px; line-height: 1; }
+        .logo-line-container { display: flex; align-items: center; width: 100%; margin-top: 2px; }
+        .logo-line { flex-grow: 1; height: 2px; background-color: #C00000; margin-right: 8px; }
+        .logo-partof { font-family: Georgia, serif; font-style: italic; font-size: 14px; color: #0A2240; }
+        .logo-bottom { display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+        .logo-lion { font-size: 24px; line-height: 1; }
+        .logo-atlas { font-family: Arial, sans-serif; font-size: 22px; color: #999; }
+        .logo-mara { font-family: Arial, sans-serif; font-size: 22px; color: #C00000; }
+        .logo-diamond { width: 22px; height: 22px; border-radius: 4px; background: #0A2240; transform: rotate(45deg); margin-left: 4px; border: 3px solid #0066CC; }
+
+        .user-icon { font-size: 24px; color: #0A2240; }
+        .welcome-text { font-size: 12px; font-weight: 600; color: #333; text-align: right;}
+
+        .content { padding: 20px; }
+        .title { text-align: center; margin-bottom: 5px; font-size: 20px; color: #0A2240; font-weight: 700; }
+        .title span { color: #00A651; }
+        .subtitle { text-align: center; font-size: 11px; color: #666; margin-bottom: 25px; }
+
+        .calc-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .calc-header { text-align: center; font-weight: 700; color: #0A2240; font-size: 16px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        
+        .slider-section { text-align: center; margin-bottom: 25px; }
+        .slider-label { font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 10px; }
+        .slider-value { font-size: 28px; font-weight: 700; color: #333; margin-bottom: 10px; }
+        
+        input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: white; border: 3px solid #0A2240; cursor: pointer; margin-top: -10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #0A2240; border-radius: 2px; }
+        
+        .slider-limits { display: flex; justify-content: space-between; font-size: 10px; color: #888; margin-top: 5px; }
+
+        .term-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .term-btn { padding: 10px 5px; border: 1px solid #ddd; border-radius: 8px; background: white; font-size: 12px; font-weight: 600; color: #555; cursor: pointer; text-align: center; }
+        .term-btn.active { background: #00A651; color: white; border-color: #00A651; }
+
+        .result-box { background: #f8f9fc; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid #eef0f5; }
+        .result-label { font-size: 11px; font-weight: 600; color: #666; letter-spacing: 1px; margin-bottom: 5px; }
+        .result-value { font-size: 28px; font-weight: 700; color: #0A2240; }
+        .result-sub { font-size: 11px; color: #888; margin-top: 5px; }
+
+        .btn-main { width: 100%; background: #0A2240; color: white; font-size: 14px; font-weight: 600; padding: 16px; border: none; border-radius: 8px; cursor: pointer; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-main">BancABC</div>
+                <div class="logo-line-container">
+                    <div class="logo-line"></div>
+                    <div class="logo-partof">part of</div>
+                </div>
+                <div class="logo-bottom">
+                    <span class="logo-lion">🦁</span>
+                    <span class="logo-atlas">atlas</span><span class="logo-mara">mara</span>
+                    <div class="logo-diamond"></div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div class="user-icon">👤</div>
+                <div class="welcome-text">Welcome</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="title">Get Your Loan Approved <span>Fast</span></div>
+            <div class="subtitle">Quick approval • Competitive rates • Flexible terms</div>
+
+            <div class="calc-card">
+                <div class="calc-header">Loan Calculator</div>
+                
+                <div class="slider-section">
+                    <div class="slider-label">LOAN AMOUNT</div>
+                    <div class="slider-value" id="amountDisplay">$50,000</div>
+                    <input type="range" id="amountSlider" min="500" max="50000" step="500" value="50000" oninput="calculate()">
+                    <div class="slider-limits"><span>USD 500</span><span>USD 50,000</span></div>
+                </div>
+
+                <div class="slider-section">
+                    <div class="slider-label">LOAN TERM</div>
+                    <div class="slider-value" id="termDisplay" style="font-size: 20px;">12 months</div>
+                    <div class="term-grid">
+                        <button class="term-btn" onclick="setTerm(6)">6 months</button>
+                        <button class="term-btn active" id="btn12" onclick="setTerm(12)">12 months</button>
+                        <button class="term-btn" onclick="setTerm(24)">24 months</button>
+                        <button class="term-btn" onclick="setTerm(36)">36 months</button>
+                        <button class="term-btn" onclick="setTerm(48)">48 months</button>
+                        <button class="term-btn" onclick="setTerm(60)">60 months</button>
+                    </div>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-label">MONTHLY PAYMENT</div>
+                    <div class="result-value" id="paymentDisplay">$4,268.93</div>
+                    <div class="result-sub">Interest rate: 4.5% APR</div>
+                </div>
+
+                <!-- Goes to Application Form -->
+                <button class="btn-main" onclick="window.location.href='application.html'">APPLY NOW</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTerm = 12;
+
+        function calculate() {
+            let amount = parseFloat(document.getElementById('amountSlider').value);
+            document.getElementById('amountDisplay').innerText = '$' + amount.toLocaleString();
+
+            let rate = 0.045 / 12; 
+            let payment = amount * rate * Math.pow(1 + rate, currentTerm) / (Math.pow(1 + rate, currentTerm) - 1);
+            
+            document.getElementById('paymentDisplay').innerText = '$' + payment.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        function setTerm(months) {
+            currentTerm = months;
+            document.getElementById('termDisplay').innerText = months + ' months';
+            let buttons = document.querySelectorAll('.term-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            calculate();
+        }
+    </script>
+</body>
+</html>

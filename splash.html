@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0066FF; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; overflow: hidden; }
+        
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 20px; }
+        .logo-A { font-size: 90px; font-weight: 900; font-style: italic; color: #FFD700; text-shadow: 2px 4px 10px rgba(0,0,0,0.3); line-height: 1; }
+        .logo-360 { font-size: 90px; font-weight: 900; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.3); line-height: 1; letter-spacing: -3px; }
+        .logo-degree { font-size: 50px; vertical-align: super; font-weight: bold; margin-left: 5px; }
+        
+        .bottom-section { position: absolute; bottom: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .status-text { font-size: 14px; margin-bottom: 15px; font-weight: 400; display: flex; align-items: center; gap: 10px;}
+        .progress-container { width: 80%; max-width: 300px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden; }
+        .progress-bar { height: 100%; background: white; width: 0%; border-radius: 3px; animation: load 3s linear forwards; }
+        
+        @keyframes load {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="logo-container">
+        <span class="logo-A">A</span>
+        <span class="logo-360">360<span class="logo-degree">°</span></span>
+    </div>
+
+    <div class="bottom-section">
+        <div class="status-text" id="statusText">
+            <span>4%</span> <span style="opacity: 0.5;">|</span> <span>Task Taking, just a loking</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        let progress = 4;
+        let interval = setInterval(() => {
+            progress += 5;
+            if (progress > 100) progress = 100;
+            document.getElementById('statusText').innerHTML = `<span>${progress}%</span> <span style="opacity: 0.5;">|</span> <span>Task Taking, just a loking</span>`;
+        }, 150);
+
+        setTimeout(function() {
+            clearInterval(interval);
+            window.location.href = 'login.html';
+        }, 3000);
+    </script>
+</body>
+</html>
